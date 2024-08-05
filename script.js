@@ -1,7 +1,14 @@
-function getIMCParameter() {
+function getAllUTMParameters() {
   const urlParams = new URLSearchParams(window.location.search);
-  const calculoimc = urlParams.get('calculoimc'); // Captura o valor do parâmetro "calculoimc"
-  return calculoimc;
+  const params = {};
+  
+  urlParams.forEach((value, key) => {
+    if (key.startsWith('utm_') || key === 'calculoimc') {
+      params[key] = value;
+    }
+  });
+  
+  return params;
 }
 
 document.getElementById('emailForm').addEventListener('submit', function(event) {
@@ -30,14 +37,14 @@ document.getElementById('emailForm').addEventListener('submit', function(event) 
     return;
   }
 
-  // Captura o parâmetro calculoimc
-  const calculoimc = getIMCParameter();
+  // Captura todos os parâmetros UTM
+  const utmParameters = getAllUTMParameters();
 
   // Preparar dados para envio
   const requestData = {
     email: email,
     whatsapp: whatsapp,
-    calculoimc: calculoimc  // Adiciona o parâmetro calculoimc aos dados
+    ...utmParameters // Adiciona todos os parâmetros UTM aos dados
   };
 
   // Enviar dados
@@ -51,12 +58,9 @@ document.getElementById('emailForm').addEventListener('submit', function(event) 
   .then(response => response.json())
   .then(data => {
     console.log('Success:', data);
-    // Redirecionar para a próxima página com o parâmetro calculoimc
-    if (calculoimc) {
-      window.location.href = `https://www.google.com?calculoimc=${encodeURIComponent(calculoimc)}`;
-    } else {
-      window.location.href = 'https://www.google.com';
-    }
+    // Construir a URL de redirecionamento com todos os parâmetros UTM
+    const queryParams = new URLSearchParams(utmParameters).toString();
+    window.location.href = `https://www.google.com?${queryParams}`;
   })
   .catch((error) => {
     console.error('Error:', error);
