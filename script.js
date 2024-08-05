@@ -1,71 +1,75 @@
 function getIMCParameter() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const calculoimc = urlParams.get('calculoimc');
-    return calculoimc;
+  const urlParams = new URLSearchParams(window.location.search);
+  const calculoimc = urlParams.get('calculoimc'); // Captura o valor do parâmetro "calculoimc"
+  return calculoimc;
 }
 
-document.getElementById('emailForm').addEventListener('submit', function (event) {
-    event.preventDefault();
+document.getElementById('emailForm').addEventListener('submit', function(event) {
+  event.preventDefault();
 
-    const email = document.getElementById('emailInput').value;
-    const whatsapp = document.getElementById('whatsappInput').value;
-    const privacyChecked = document.getElementById('privacyPolicyCheckbox').checked;
+  const email = document.getElementById('emailInput').value;
+  const whatsapp = document.getElementById('whatsappInput').value;
+  const privacyChecked = document.getElementById('privacyPolicyCheckbox').checked;
 
-    // Validate email
-    if (!email.includes('@')) {
-        alert('Please enter a valid email address.');
-        return;
+  // Validar email
+  if (!email.includes('@')) {
+    alert('Por favor, insira um endereço de email válido.');
+    return;
+  }
+
+  // Validar número do WhatsApp
+  const whatsappDigits = whatsapp.replace(/\D/g, ''); // Remove caracteres não numéricos
+  if (whatsappDigits.length < 10 || whatsappDigits.length > 11) {
+    alert('Por favor, insira um número de WhatsApp válido com exatamente 10 ou 11 dígitos.');
+    return;
+  }
+
+  // Verificar se o usuário concorda com a política de privacidade
+  if (!privacyChecked) {
+    alert('Você deve concordar com a política de privacidade para continuar.');
+    return;
+  }
+
+  // Captura o parâmetro calculoimc
+  const calculoimc = getIMCParameter();
+
+  // Preparar dados para envio
+  const requestData = {
+    email: email,
+    whatsapp: whatsapp,
+    calculoimc: calculoimc  // Adiciona o parâmetro calculoimc aos dados
+  };
+
+  // Enviar dados
+  fetch('https://webhook.empreendimentosonfire.win/webhook/leanleapleads', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Success:', data);
+    // Redirecionar para a próxima página com o parâmetro calculoimc
+    if (calculoimc) {
+      window.location.href = `https://www.google.com?calculoimc=${encodeURIComponent(calculoimc)}`;
+    } else {
+      window.location.href = 'https://www.google.com';
     }
-
-    // Validate WhatsApp number
-    const whatsappDigits = whatsapp.replace(/\D/g, ''); // Remove non-numeric characters
-    if (whatsappDigits.length < 10 || whatsappDigits.length > 11) {
-        alert('Please enter a valid WhatsApp number with exactly 10 or 11 digits.');
-        return;
-    }
-
-    // Check privacy policy agreement
-    if (!privacyChecked) {
-        alert('You must agree to the privacy policy to continue.');
-        return;
-    }
-
-    // Get IMC parameter
-    const calculoimc = getIMCParameter();
-
-    // Prepare data for submission
-    const requestData = {
-        email: email,
-        whatsapp: whatsapp,
-        calculoimc: calculoimc  // Add calculoimc parameter to the data
-    };
-
-    // Submit data
-    fetch('https://webhook.empreendimentosonfire.win/webhook/leanleapleads', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            // Redirect to Google with calculoimc parameter
-            window.location.href = `https://www.google.com?calculoimc=${calculoimc}`;
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
 });
 
-document.getElementById('whatsappInput').addEventListener('input', function (event) {
-    let value = event.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-    if (value.length > 11) value = value.slice(0, 11); // Limit to 11 digits
-    if (value.length > 2) {
-        value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
-    } else {
-        value = `(${value}`;
-    }
-    event.target.value = value;
+document.getElementById('whatsappInput').addEventListener('input', function(event) {
+  let value = event.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+  if (value.length > 11) value = value.slice(0, 11); // Limite de 11 dígitos
+  if (value.length > 2) {
+    value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+  } else {
+    value = `(${value}`;
+  }
+  event.target.value = value;
 });
