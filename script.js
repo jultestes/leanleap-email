@@ -1,14 +1,12 @@
-function getAllUTMParameters() {
+function getIMCParameter() {
   const urlParams = new URLSearchParams(window.location.search);
-  const params = {};
+  const calculoimc = urlParams.get('calculoimc');
   
-  urlParams.forEach((value, key) => {
-    if (key.startsWith('utm_') || key === 'calculoimc') {
-      params[key] = value;
-    }
-  });
+  if (calculoimc) {
+    localStorage.setItem('calculoimc', calculoimc);
+  }
   
-  return params;
+  return calculoimc || localStorage.getItem('calculoimc');
 }
 
 document.getElementById('emailForm').addEventListener('submit', function(event) {
@@ -37,14 +35,14 @@ document.getElementById('emailForm').addEventListener('submit', function(event) 
     return;
   }
 
-  // Captura todos os parâmetros UTM
-  const utmParameters = getAllUTMParameters();
+  // Captura o parâmetro calculoimc
+  const calculoimc = getIMCParameter();
 
   // Preparar dados para envio
   const requestData = {
     email: email,
     whatsapp: whatsapp,
-    ...utmParameters // Adiciona todos os parâmetros UTM aos dados
+    calculoimc: calculoimc // Adiciona o parâmetro calculoimc aos dados
   };
 
   // Enviar dados
@@ -58,9 +56,8 @@ document.getElementById('emailForm').addEventListener('submit', function(event) 
   .then(response => response.json())
   .then(data => {
     console.log('Success:', data);
-    // Construir a URL de redirecionamento com todos os parâmetros UTM
-    const queryParams = new URLSearchParams(utmParameters).toString();
-    window.location.href = `https://www.google.com?${queryParams}`;
+    // Redirecionar para a próxima página com o parâmetro calculoimc
+    window.location.href = `https://www.google.com?calculoimc=${encodeURIComponent(calculoimc)}`;
   })
   .catch((error) => {
     console.error('Error:', error);
