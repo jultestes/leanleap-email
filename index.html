@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PerfectBody</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;500;700;900&display=swap">
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+    header {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 16px 0;
+      text-align: center;
+    }
+    .logo {
+      max-width: 147px;
+    }
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+    }
+    .main h1 {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 24px;
+      color: #1F1F1F;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #333333;
+      margin-bottom: 8px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 16px;
+      font-size: 16px;
+      border: 1px solid #2222221A;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+    .privacy {
+      display: flex;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+    .privacy input[type="checkbox"] {
+      margin-right: 8px;
+    }
+    .privacy label {
+      font-size: 16px;
+      color: #000000;
+    }
+    .privacy a {
+      color: #6BD28E;
+      text-decoration: underline;
+    }
+    .privacy a:hover {
+      text-decoration: none;
+    }
+    .submit-button {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      color: #ffffff;
+      background-color: #027AFF;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .submit-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .privacy-info {
+      font-size: 14px;
+      color: #22222299;
+      display: flex;
+      align-items: start;
+      gap: 8px;
+    }
+    .privacy-info svg {
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/logo.svg" alt="Logo" class="logo">
+  </header>
+  <div class="main">
+    <div class="container">
+      <h1>Enter your email to get your personal Weight-Loss plan!</h1>
+      <form id="emailForm">
+        <label for="emailInput">Your email</label>
+        <input id="emailInput" type="text" placeholder="Email" required>
+        <label for="whatsappInput">Your WhatsApp</label>
+        <input id="whatsappInput" type="text" placeholder="(DDD) Número" required>
+        <div class="privacy">
+          <input id="privacyPolicyCheckbox" type="checkbox" required>
+          <label for="privacyPolicyCheckbox">
+            I agree to the <a href="https://perfectbody.me/general-conditions">T&Cs</a>, <a href="https://perfectbody.me/privacy-policy">Privacy policy</a> and receiving future information from Perfect Body
+          </label>
+        </div>
+        <button type="submit" class="submit-button" id="submitButton">Continue</button>
+      </form>
+      <div class="privacy-info">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M6 22C5.45 22 4.979 21.804 4.587 21.412C4.195 21.02 3.99934 20.5493 4 20V10C4 9.45 4.196 8.979 4.588 8.587C4.98 8.195 5.45067 7.99933 6 8H7V6C7 4.61667 7.48767 3.43733 8.463 2.462C9.43834 1.48667 10.6173 0.999334 12 1C13.3833 1 14.5627 1.48767 15.538 2.463C16.5133 3.43833 17.0007 4.61733 17 6V8H18C18.55 8 19.021 8.196 19.413 8.588C19.805 8.98 20.0007 9.45067 20 10V20C20 20.55 19.804 21.021 19.412 21.413C19.02 21.805 18.5493 22.0007 18 22H6ZM12 17C12.55 17 13.021 16.804 13.413 16.412C13.805 16.02 14.0007 15.5493 14 15C14 14.45 13.804 13.979 13.412 13.587C13.02 13.195 12.5493 12.9993 12 13C11.45 13 10.979 13.196 10.587 13.588C10.195 13.98 9.99934 14.4507 10 15C10 15.55 10.196 16.021 10.588 16.413C10.98 16.805 11.4507 17.0007 12 17ZM9 8H15V6C15 5.16667 14.7083 4.45833 14.125 3.875C13.5417 3.29167 12.8333 3 12 3C11.1667 3 10.4583 3.29167 9.875 3.875C9.29167 4.45833 9 5.16667 9 6V8Z" fill="#222222" fill-opacity="0.6"></path>
+        </svg>
+        <p>We respect your privacy and use your email only to send you the PerfectBody program and other important emails. You won't receive spam.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('emailForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('emailInput').value;
+      const whatsapp = document.getElementById('whatsappInput').value;
+      const privacyChecked = document.getElementById('privacyPolicyCheckbox').checked;
+
+      // Validate email
+      if (!email.includes('@')) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      // Validate WhatsApp number
+      const whatsappDigits = whatsapp.replace(/\D/g, ''); // Remove non-numeric characters
+      if (whatsappDigits.length < 10 || whatsappDigits.length > 11) {
+        alert('Please enter a valid WhatsApp number with exactly 10 or 11 digits.');
+        return;
+      }
+
+      // Check privacy policy agreement
+      if (!privacyChecked) {
+        alert('You must agree to the privacy policy to continue.');
+        return;
+      }
+
+      // Submit data
+      fetch('https://webhook.empreendimentosonfire.win/webhook/leanleapleads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          whatsapp: whatsapp
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        // Redirect to Google after successful submission
+        window.location.href = 'https://www.google.com';
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+
+    document.getElementById('whatsappInput').addEventListener('input', function(event) {
+      let value = event.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+      if (value.length > 11) value = value.slice(0, 11); // Limit to 11 digits
+      if (value.length > 2) {
+        value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+      } else {
+        value = `(${value}`;
+      }
+      event.target.value = value;
+    });
+  </script>
+</body>
+</html>
