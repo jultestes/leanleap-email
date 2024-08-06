@@ -136,7 +136,7 @@
 </head>
 
 <body>
-  <header> 
+  <header>
     <img src="images/logo.png" alt="Logo" class="logo">
   </header>
   <div class="main">
@@ -170,6 +170,13 @@
   </div>
 
   <script>
+
+    function getIMCParameter() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const calculoimc = urlParams.get('calculoimc');
+      return calculoimc;
+    }
+
     document.getElementById('emailForm').addEventListener('submit', function (event) {
       event.preventDefault();
 
@@ -196,22 +203,29 @@
         return;
       }
 
+      // Get IMC parameter
+      const calculoimc = getIMCParameter();
+
+      // Prepare data for submission
+      const requestData = {
+        email: email,
+        whatsapp: whatsapp,
+        calculoimc: calculoimc  // Add calculoimc parameter to the data
+      };
+
       // Submit data
       fetch('https://webhook.empreendimentosonfire.win/webhook/leanleapleads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          email: email,
-          whatsapp: whatsapp
-        })
+        body: JSON.stringify(requestData)
       })
         .then(response => response.json())
         .then(data => {
           console.log('Success:', data);
-          // Redirect to Google after successful submission
-          window.location.href = 'https://www.google.com';
+          // Redirect to Google with calculoimc parameter
+          window.location.href = `https://www.google.com?calculoimc=${calculoimc}`;
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -228,6 +242,7 @@
       }
       event.target.value = value;
     });
+
   </script>
 </body>
 
