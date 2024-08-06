@@ -102,7 +102,7 @@
       font-weight: bold;
       text-align: center;
       color: #ffffff;
-      background-image: linear-gradient(50deg, #DF50AF, #822483, #361D47);
+      background: linear-gradient(to right, #9250be, #f706fa);
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -225,7 +225,7 @@
         .then(data => {
           console.log('Success:', data);
           // Redirect to Google with calculoimc parameter
-          window.location.href = `https://teste-sitecheckout.vercel.app/?calculoimc=${calculoimc}`;
+          window.location.href = `https://www.google.com?calculoimc=${calculoimc}`;
         })
         .catch((error) => {
           console.error('Error:', error);
