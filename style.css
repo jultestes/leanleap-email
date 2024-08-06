@@ -78,7 +78,7 @@ input[type="text"] {
   font-weight: bold;
   text-align: center;
   color: #ffffff;
-  background-color: #027AFF;
+  background: linear-gradient(to right, #9250be, #f706fa);
   border: none;
   border-radius: 8px;
   cursor: pointer;
