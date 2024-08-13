@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -191,50 +191,63 @@
   </div>
 
   <script>
-
+    function getUTMParameters() {
+      const urlParams = new URLSearchParams(window.location.search);
+      let utmParams = [];
+  
+      // Itera sobre todos os parâmetros da URL
+      urlParams.forEach((value, key) => {
+        if (key.startsWith('utm_') || key === 'calculoimc') {
+          utmParams.push(`${key}=${value}`);
+        }
+      });
+  
+      return utmParams.join('&');
+    }
+  
     function getIMCParameter() {
       const urlParams = new URLSearchParams(window.location.search);
       const calculoimc = urlParams.get('calculoimc');
       return calculoimc;
     }
-
+  
     document.getElementById('emailForm').addEventListener('submit', function (event) {
       event.preventDefault();
-
+  
       const email = document.getElementById('emailInput').value;
       const whatsapp = document.getElementById('whatsappInput').value;
       const privacyChecked = document.getElementById('privacyPolicyCheckbox').checked;
-
+  
       // Validate email
       if (!email.includes('@')) {
         alert('Please enter a valid email address.');
         return;
       }
-
+  
       // Validate WhatsApp number
       const whatsappDigits = whatsapp.replace(/\D/g, ''); // Remove non-numeric characters
       if (whatsappDigits.length < 10 || whatsappDigits.length > 11) {
         alert('Please enter a valid WhatsApp number with exactly 10 or 11 digits.');
         return;
       }
-
+  
       // Check privacy policy agreement
       if (!privacyChecked) {
         alert('You must agree to the privacy policy to continue.');
         return;
       }
-
+  
       // Get IMC parameter
       const calculoimc = getIMCParameter();
-
+  
       // Prepare data for submission
       const requestData = {
         email: email,
         whatsapp: whatsapp,
         calculoimc: calculoimc  // Add calculoimc parameter to the data
       };
-
-      // Submit data
+  
+      // Submit data to the webhook
       fetch('https://webhook.empreendimentosonfire.win/webhook/leanleapleads', {
         method: 'POST',
         headers: {
@@ -245,14 +258,16 @@
         .then(response => response.json())
         .then(data => {
           console.log('Success:', data);
-          // Redirect to Google with calculoimc parameter
-          window.location.href = `https://leanleapwheightloss-checkout.vercel.app/?calculoimc=${calculoimc}`;
+          
+          // Redireciona para a próxima página com os parâmetros UTM
+          const utmParameters = getUTMParameters();
+          window.location.href = `https://leanleapwheightloss-checkout.vercel.app/?${utmParameters}`;
         })
         .catch((error) => {
           console.error('Error:', error);
         });
     });
-
+  
     document.getElementById('whatsappInput').addEventListener('input', function (event) {
       let value = event.target.value.replace(/\D/g, ''); // Remove non-numeric characters
       if (value.length > 11) value = value.slice(0, 11); // Limit to 11 digits
@@ -263,8 +278,8 @@
       }
       event.target.value = value;
     });
-
   </script>
+  
 </body>
 
 </html>
